@@ -9,26 +9,44 @@ class Header extends Part
 class Status extends Part
 	(@code)~>
 
-error = (fn, err, push)-->
-	for thing in fn err
-		push null thing
+handle-error = (f, stream)-->
+	stream.consume (e, x, p, n)->
+		if e
+			try n f e
+			catch => p e
+			p null global.nil # TODO ew
+		else if x is global.nil
+			p null global.nil
+		else
+			p null x
+			n!
 
 dev-err = (err)-> [
 	Status 500
 	err.stack
 ]
 
+filter = (func, stream)--> stream.filter func
+pipe   = (dest, stream)--> stream.pipe dest
+
 is-body = (in <[String Buffer]>) . (typeof!)
 
-# handle :: (Request -> Result) -> (Request, Response) -> ()
-handle = (handler, req, res)-->
+# handle-with-error :: (Error -> Result) -> (Request -> Result) -> (Request, Response) -> ()
+handle-with-error = (err-handler, handler, req, res)-->
 	handler req
-	.errors error dev-err
-	.filter (part)-> match part
+	|> handle-error err-handler
+	|> filter (part)-> match part
 		| Status.is => res.status-code = part.code; false
 		| Header.is => res.set-header ...part[\name \value]; false
 		| is-body => true
-	.pipe res
+	|> pipe res
 
-handle import {Status, Header}
+handle = handle-with-error dev-err
+handle import {
+	Status,
+	Header,
+	Part,
+	handle-with-error,
+	handle
+}
 module.exports = handle
