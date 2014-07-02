@@ -29,7 +29,7 @@ dev-err = (err)-> [
 filter = (func, stream)--> stream.filter func
 pipe   = (dest, stream)--> stream.pipe dest
 
-is-body = (in <[String Buffer]>) . (typeof!)
+is-body = (chunk)-> chunk instanceof Buffer or typeof chunk is \string
 
 # handle-with-error :: (Error -> Result) -> (Request -> Result) -> (Request, Response) -> ()
 handle-with-error = (err-handler, handler, req, res)-->
