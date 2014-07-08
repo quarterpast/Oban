@@ -27,20 +27,16 @@ dev-err = (err)-> [
 	err.stack
 ]
 
-filter = (func, stream)--> stream.filter func
-pipe   = (dest, stream)--> stream.pipe dest
-
 is-body = (chunk)-> chunk instanceof Buffer or typeof chunk is \string
 
 # handle-with-error :: (Error -> Result) -> (Request -> Result) -> (Request, Response) -> ()
 handle-with-error = (err-handler, handler, req, res)-->
-	handler req
-	|> handle-error err-handler
-	|> filter (part)-> match part
+	handle-error err-handler, handler req
+	.filter (part)-> match part
 		| Status.is => res.status-code = part.code; false
 		| Header.is => res.set-header ...part[\name \value]; false
 		| is-body => true
-	|> pipe res
+	.pipe res
 
 handle = handle-with-error dev-err
 handle import {
