@@ -13,8 +13,9 @@ handle-error = (f, stream)-->
 	stream.consume (e, x, p, n)->
 		if e
 			try n f e
-			catch => p e
-			p null global.nil # TODO ew
+			catch e2
+				p e2
+				p null global.nil # TODO ew
 		else if x is global.nil
 			p null global.nil
 		else
