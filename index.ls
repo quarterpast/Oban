@@ -9,6 +9,7 @@ class Header extends Part
 class Status extends Part
 	(@code)~>
 
+# handle-error :: (Error → Stream a) → Stream a → Stream a
 handle-error = (f, stream)-->
 	stream.consume (e, x, p, n)->
 		if e
@@ -22,11 +23,13 @@ handle-error = (f, stream)-->
 			p null x
 			n!
 
+# dev-err :: Error → Result
 dev-err = (err)-> [
 	Status 500
 	err.stack
 ]
 
+# is-body :: Part → Boolean
 is-body = (chunk)-> chunk instanceof Buffer or typeof chunk is \string
 
 # handle-with-error :: (Error -> Result) -> (Request -> Result) -> (Request, Response) -> ()
@@ -38,12 +41,13 @@ handle-with-error = (err-handler, handler, req, res)-->
 		| is-body => true
 	.pipe res
 
+# handle :: (Request -> Result) -> (Request, Response) -> ()
 handle = handle-with-error dev-err
-handle import {
+
+module.exports = handle import {
 	Status,
 	Header,
 	Part,
 	handle-with-error,
 	handle
 }
-module.exports = handle
