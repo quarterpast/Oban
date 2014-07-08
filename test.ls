@@ -30,6 +30,16 @@ export 'Oban':
 				expect res .to.have.property \statusCode 153
 				done!
 
+	'sets headers to Header chunks': (done)->
+		res = concat-stream (body)->
+			expect res.set-header .to.be.called-with \X-Test \foo
+			done!
+		res.set-header = expect.sinon.stub!
+		handle do
+			-> σ [handle.Header \X-Test \foo]
+			{}
+			res
+
 	'pipes buffer chunks to body': (done)->
 		handle do
 			-> σ [
@@ -72,4 +82,13 @@ export 'Oban':
 			{}
 			res = concat-stream (body)->
 				expect res .to.have.property \statusCode 500
+				done!
+
+	'handle-with-error allows setting custom error handler': (done)->
+		handle.handle-with-error do
+			-> σ ['error']
+			-> σ (push)-> push new Error; push global.nil
+			{}
+			concat-stream (body)->
+				expect body .to.be 'error'
 				done!
