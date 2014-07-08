@@ -24,6 +24,7 @@
   "homepage": "https://github.com/quarterto/Oban",
   "devDependencies": {
     "LiveScript": "^1.2.0",
+    "concat-stream": "^1.4.6",
     "highland": "^1.25.4",
     "karma-sinon-expect": "^0.1.4",
     "mocha": "^1.20.1"
