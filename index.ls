@@ -1,14 +1,4 @@
-# data Part = Header { name :: String, value :: String }
-#           | Status { code :: Number}
-#           | Chunk Buffer
-# type Result = Stream Part
-class Part
-	@is = (v)-> v instanceof this
-class Header extends Part
-	(@name, @value)~>
-class Status extends Part
-	(@code)~>
-
+{Status, Header} = require \oban-response
 {nil} = require \highland
 
 # handle-error :: (Error → Stream a) → Stream a → Stream a
@@ -47,9 +37,6 @@ handle-with-error = (err-handler, handler, req, res)-->
 handle = handle-with-error dev-err
 
 module.exports = handle import {
-	Status,
-	Header,
-	Part,
 	handle-with-error,
 	handle
 }

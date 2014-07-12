@@ -3,6 +3,8 @@ require! {
 	handle: './index.js'
 	'concat-stream'
 	σ: highland
+	'oban-response'.Header
+	'oban-response'.Status
 }
 
 export 'Oban':
@@ -24,7 +26,7 @@ export 'Oban':
 
 	'sets status to Status chunks': (done)->
 		handle do
-			-> σ [handle.Status 153]
+			-> σ [Status 153]
 			{}
 			res = concat-stream (body)->
 				expect res .to.have.property \statusCode 153
@@ -36,7 +38,7 @@ export 'Oban':
 			done!
 		res.set-header = expect.sinon.stub!
 		handle do
-			-> σ [handle.Header \X-Test \foo]
+			-> σ [Header \X-Test \foo]
 			{}
 			res
 

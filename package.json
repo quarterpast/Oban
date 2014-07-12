@@ -30,6 +30,7 @@
     "mocha": "^1.20.1"
   },
   "dependencies": {
-    "highland": "git://github.com/quarterto/highland#otherwise"
+    "highland": "git://github.com/quarterto/highland#otherwise",
+    "oban-response": "0.0.0"
   }
 }
