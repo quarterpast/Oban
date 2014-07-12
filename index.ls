@@ -9,6 +9,8 @@ class Header extends Part
 class Status extends Part
 	(@code)~>
 
+{nil} = require \highland
+
 # handle-error :: (Error → Stream a) → Stream a → Stream a
 handle-error = (f, stream)-->
 	stream.consume (e, x, p, n)->
@@ -16,9 +18,9 @@ handle-error = (f, stream)-->
 			try n f e
 			catch e2
 				p e2
-				p null global.nil # TODO ew
-		else if x is global.nil
-			p null global.nil
+				p null nil
+		else if x is nil
+			p null nil
 		else
 			p null x
 			n!
