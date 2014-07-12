@@ -3,8 +3,8 @@ require! {
 	handle: './index.js'
 	'concat-stream'
 	σ: highland
-	'oban-response'.Header
-	'oban-response'.Status
+	'peat'.Header
+	'peat'.Status
 }
 
 export 'Oban':

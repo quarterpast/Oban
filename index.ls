@@ -1,5 +1,5 @@
-{Status, Header} = require \oban-response
-{nil} = require \highland
+{Part, Status} = require \peat
+{nil}  = require \highland
 
 # handle-error :: (Error → Stream a) → Stream a → Stream a
 handle-error = (f, stream)-->
@@ -28,8 +28,7 @@ is-body = (chunk)-> chunk instanceof Buffer or typeof chunk is \string
 handle-with-error = (err-handler, handler, req, res)-->
 	handle-error err-handler, handler req
 	.filter (part)-> match part
-		| Status.is => res.status-code = part.code; false
-		| Header.is => res.set-header ...part[\name \value]; false
+		| Part.is => that.run res; false
 		| is-body => true
 	.pipe res
 

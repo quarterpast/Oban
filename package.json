@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "highland": "git://github.com/quarterto/highland#otherwise",
-    "oban-response": "0.0.0"
+    "peat": "^0.1.0"
   }
 }
