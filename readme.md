@@ -6,11 +6,13 @@ Highland stream HTTP server. Builds on top of [`http`](https://nodejs.org/api/ht
 
 ## Example
 
+[Peat](https://github.com/quarterto/Peat) gives our response builders, or you can use [Dram](https://github.com/quarterto/Dram) for a more expressive style.
+
 ### Simple response
 ```javascript
 var handle = require('oban');
 var http   = require('http');
-var resp   = require('oban-response');
+var resp   = require('peat');
 var stream = require('highland')
 
 http.createServer(handle(function(req) {
