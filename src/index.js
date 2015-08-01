@@ -45,6 +45,6 @@ var Response = MetaStream.use({
 	redirect(location, status = 302) {
 		return this.body([]).status(status).header('location', location);
 	}
-}
+});
 
 module.exports = Response;

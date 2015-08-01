@@ -1,11 +1,12 @@
 export SHELL := "/bin/bash"
 export PATH  := $(shell npm bin):$(PATH)
 
-%.js: %.ls
-	lsc -c $<
+lib/%.js: src/%.js
+	@mkdir -p $(@D)
+	babel $(BABEL_OPTS) $< -o $@
 
-all: index.js
+all: lib/index.js
 
-test: all test.ls
-	mocha -u exports -r LiveScript test.ls
+test: all test.js
+	mocha -u exports -r babel/register
 
