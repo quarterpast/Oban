@@ -23,15 +23,13 @@
   },
   "homepage": "https://github.com/quarterto/Oban",
   "devDependencies": {
-    "LiveScript": "^1.2.0",
-    "concat-stream": "^1.4.6",
-    "highland": "^1.25.4",
-    "karma-sinon-expect": "^0.1.4",
-    "mocha": "^1.20.1",
+    "babel": "^5.8.20",
+    "chai": "^3.2.0",
+    "dirty-chai": "^1.2.2",
+    "mocha": "^2.2.5",
     "semantic-release": "^4.3.4"
   },
   "dependencies": {
-    "highland": "git://github.com/quarterto/highland#otherwise",
-    "peat": "^0.1.0"
+    "@quarterto/meta-stream": "^1.0.0"
   }
 }
