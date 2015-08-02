@@ -1,7 +1,7 @@
 {
   "name": "oban",
   "description": "Highland stream http server",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "make test",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
