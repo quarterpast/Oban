@@ -1,14 +1,14 @@
 {
   "name": "oban",
-  "version": "0.2.0",
   "description": "Highland stream http server",
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/quarterto/Oban.git"
+    "url": "https://github.com/quarterto/Oban.git"
   },
   "keywords": [
     "stream",
@@ -27,7 +27,8 @@
     "concat-stream": "^1.4.6",
     "highland": "^1.25.4",
     "karma-sinon-expect": "^0.1.4",
-    "mocha": "^1.20.1"
+    "mocha": "^1.20.1",
+    "semantic-release": "^4.3.4"
   },
   "dependencies": {
     "highland": "git://github.com/quarterto/highland#otherwise",
