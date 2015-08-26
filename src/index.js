@@ -30,7 +30,7 @@ var Response = MetaStream.use({
 }, {
 	body(body) {
 		return this(
-			_.isStream(body) || body.pipe? body
+			σ.isStream(body) || body.pipe? body
 			: /* otherwise */              [].concat(body)
 		);
 	},
