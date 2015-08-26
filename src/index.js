@@ -48,8 +48,12 @@ var Response = MetaStream.use({
 		);
 	},
 
+	empty() {
+		return this([]);
+	},
+
 	redirect(location, status = 302) {
-		return this.body([]).status(status).header('location', location);
+		return this.empty().status(status).header('location', location);
 	},
 
 	...statusMethods

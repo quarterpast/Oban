@@ -89,13 +89,22 @@ exports['Response'] = {
 
 	...statusTests,
 
+	'empty': {
+		'should set empty body' (done) {
+			Response.empty().toArray(xs => {
+				expect(xs).to.be.empty();
+				done();
+			});
+		},
+	},
+
 	'redirect': {
 		'should set empty body' (done) {
 			var R = Response.use({}, {
-				body(body) {
-					expect(body).to.be.empty();
+				empty() {
+					expect('here').to.be.ok();
 					done();
-					return Response.body(body);
+					return Response.empty();
 				}
 			});
 
