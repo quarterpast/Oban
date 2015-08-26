@@ -1,7 +1,42 @@
 var {expect} = require('chai').use(require('dirty-chai'));
-var σ = require('highland');
 
+var σ = require('highland');
+var {STATUS_CODES} = require('http');
+var camelCase = require('camel-case');
 var Response = require('./');
+
+function statusTest(status) {
+	var funcName = camelCase(STATUS_CODES[status]);
+	return {
+		'should set body' (done) {
+			var R = Response.use({}, {
+				body(body) {
+					expect(body).to.equal('hello');
+					done();
+					return Response.body(body);
+				}
+			});
+
+			R[funcName]('hello');
+		},
+
+		[`should set ${status} status`] (done) {
+			var r = Response[funcName]('');
+			var s = σ();
+			s.writeHead = (status, headers) => {
+				expect(status).to.equal(parseInt(status));
+				done();
+			};
+			r.pipe(s);
+		}
+	};
+}
+
+var statusTests = Object.keys(STATUS_CODES)
+	.reduce((o, code) =>
+		(o[camelCase(STATUS_CODES[code])] = statusTest(code), o),
+	{});
+
 
 exports['Response'] = {
 	'should stream' (done) {
@@ -52,53 +87,7 @@ exports['Response'] = {
 		}
 	},
 
-	'ok': {
-		'should set body' (done) {
-			var R = Response.use({}, {
-				body(body) {
-					expect(body).to.equal('hello');
-					done();
-					return Response.body(body);
-				}
-			});
-
-			R.ok('hello');
-		},
-
-		'should set 200 status' (done) {
-			var r = Response.ok('');
-			var s = σ();
-			s.writeHead = (status, headers) => {
-				expect(status).to.equal(200);
-				done();
-			};
-			r.pipe(s);
-		}
-	},
-
-	'notFound': {
-		'should set body' (done) {
-			var R = Response.use({}, {
-				body(body) {
-					expect(body).to.equal('hello');
-					done();
-					return Response.body(body);
-				}
-			});
-
-			R.notFound('hello');
-		},
-
-		'should set 404 status' (done) {
-			var r = Response.notFound('');
-			var s = σ();
-			s.writeHead = (status, headers) => {
-				expect(status).to.equal(404);
-				done();
-			};
-			r.pipe(s);
-		}
-	},
+	...statusTests,
 
 	'redirect': {
 		'should set empty body' (done) {
