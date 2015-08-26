@@ -4,7 +4,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "make test",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release-debug": "semantic-release pre || true"
   },
   "repository": {
     "type": "git",
