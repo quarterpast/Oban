@@ -1,4 +1,5 @@
 var MetaStream = require('@quarterto/meta-stream');
+var σ = require('highland');
 
 var Response = MetaStream.use({
 	getInitialMeta() {
