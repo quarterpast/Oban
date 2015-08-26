@@ -1,8 +1,6 @@
 export SHELL := "/bin/bash"
 export PATH  := $(shell npm bin):$(PATH)
 
-BABEL_OPTS = --optional es7.objectRestSpread
-
 lib/%.js: src/%.js
 	@mkdir -p $(@D)
 	babel $(BABEL_OPTS) $< -o $@

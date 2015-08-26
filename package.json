@@ -31,6 +31,10 @@
     "semantic-release": "^4.3.4"
   },
   "dependencies": {
-    "@quarterto/meta-stream": "^1.0.0"
+    "@quarterto/meta-stream": "^1.0.0",
+    "camel-case": "^1.1.2"
+  },
+  "babel": {
+    "optional": "es7.objectRestSpread"
   }
 }
