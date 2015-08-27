@@ -2,6 +2,7 @@ var MetaStream = require('@quarterto/meta-stream');
 var σ = require('highland');
 var camelCase = require('camel-case');
 var {STATUS_CODES} = require('http');
+var {response: responseHeaders} = require('standard-headers');
 
 function statusMethod(status) {
 	return function(body) {
@@ -13,6 +14,19 @@ var statusMethods = Object.keys(STATUS_CODES)
 	.reduce((o, code) =>
 		(o[camelCase(STATUS_CODES[code])] = statusMethod(parseInt(code)), o),
 	{});
+
+function headerMethod(header) {
+	return function(val) {
+		return this.header(header, val);
+	}
+}
+
+var headerMethods = responseHeaders
+	.filter(h => h !== 'status')
+	.reduce((o, header) =>
+		(o[camelCase(header)] = headerMethod(header), o),
+	{});
+
 
 var Response = MetaStream.use({
 	getInitialMeta() {
@@ -26,6 +40,8 @@ var Response = MetaStream.use({
 		req.writeHead(this.meta().status, this.meta().headers);
 		return σ().pipe.call(this, req);
 	},
+
+	...headerMethods,
 
 	status(status) {
 		this.meta({status});

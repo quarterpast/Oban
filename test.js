@@ -2,6 +2,7 @@ var {expect} = require('chai').use(require('dirty-chai'));
 
 var σ = require('highland');
 var {STATUS_CODES} = require('http');
+var {response: responseHeaders} = require('standard-headers');
 var camelCase = require('camel-case');
 var Response = require('./');
 
@@ -35,6 +36,25 @@ function statusTest(status) {
 var statusTests = Object.keys(STATUS_CODES)
 	.reduce((o, code) =>
 		(o[camelCase(STATUS_CODES[code])] = statusTest(code), o),
+	{});
+
+function headerTest(header) {
+	var funcName = camelCase(header);
+	return done => {
+		var r = Response.empty()[funcName]('foo')
+		var s = σ();
+		s.writeHead = (status, headers) => {
+			expect(headers).to.have.property(header, 'foo');
+			done();
+		};
+		r.pipe(s);
+	}
+}
+
+var headerTests = responseHeaders
+	.filter(h => h !== 'status')
+	.reduce((o, header) =>
+		(o[camelCase(header)] = headerTest(header), o),
 	{});
 
 
@@ -87,7 +107,8 @@ exports['Response'] = {
 		}
 	},
 
-	...statusTests,
+	'status helper methods': statusTests,
+	'header helper methods': headerTests,
 
 	'empty': {
 		'should set empty body' (done) {
