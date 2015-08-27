@@ -53,7 +53,7 @@ var Response = MetaStream.use({
 	},
 
 	redirect(location, status = 302) {
-		return this.empty().status(status).header('location', location);
+		return this.empty().status(status).headers({location});
 	},
 
 	...statusMethods
