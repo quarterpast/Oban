@@ -1,5 +1,5 @@
 var MetaStream = require('@quarterto/meta-stream');
-var σ = require('highland');
+var isReadable = require('is-readable-stream');
 
 var statusMethods = require('./status');
 var headerMethods = require('./header');
@@ -14,7 +14,7 @@ var Response = MetaStream.use({
 
 	pipe(res) {
 		res.writeHead(this.meta().status, this.meta().headers);
-		return σ().pipe.call(this, res);
+		return MetaStream().pipe.call(this, res);
 	},
 
 	...headerMethods,
@@ -35,8 +35,9 @@ var Response = MetaStream.use({
 }, {
 	body(body) {
 		return this(
-			σ.isStream(body) || body.pipe? body
-			: /* otherwise */              [].concat(body)
+			MetaStream.isStream(body)?  body
+			: isReadable(body)?         body
+			: /* otherwise */           [].concat(body)
 		);
 	},
 
