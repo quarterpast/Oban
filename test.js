@@ -71,7 +71,6 @@ exports['Response'] = {
 		'should pipe' (done) {
 			var r = Response(['hello']);
 			var s = σ();
-			s.writeHead = () => {};
 			s.apply(x => {
 				expect(x).to.equal('hello');
 				done();

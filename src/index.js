@@ -13,7 +13,7 @@ var Response = MetaStream.use({
 	},
 
 	pipe(res) {
-		res.writeHead(this.meta().status, this.meta().headers);
+		if(res.writeHead) res.writeHead(this.meta().status, this.meta().headers);
 		return MetaStream().pipe.call(this, res);
 	},
 
