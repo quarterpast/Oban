@@ -4,6 +4,15 @@ var isReadable = require('is-readable-stream');
 var statusMethods = require('./status');
 var headerMethods = require('./header');
 
+function metaMethod(key) {
+	return {[key](val) {
+		this.meta({[key]: val});
+		return this;
+	}};
+}
+
+var metaMethods = ['headers', 'status', 'timeout'].map(metaMethod).reduce(Object.assign, {});
+
 var Response = MetaStream.use({
 	getInitialMeta() {
 		return {
@@ -20,25 +29,11 @@ var Response = MetaStream.use({
 	},
 
 	...headerMethods,
-
-	status(status) {
-		this.meta({status});
-		return this;
-	},
+	...metaMethods,
 
 	header(k, v) {
 		return this.headers({[k]: v});
 	},
-
-	headers(headers) {
-		this.meta({headers});
-		return this;
-	},
-
-	timeout(timeout) {
-		this.meta({timeout});
-		return this;
-	}
 }, {
 	body(body) {
 		return this(
