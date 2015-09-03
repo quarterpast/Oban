@@ -36,9 +36,9 @@ var Response = MetaStream.use({
 		}
 	},
 
-	pipe(req) {
-		req.writeHead(this.meta().status, this.meta().headers);
-		return σ().pipe.call(this, req);
+	pipe(res) {
+		res.writeHead(this.meta().status, this.meta().headers);
+		return σ().pipe.call(this, res);
 	},
 
 	...headerMethods,
