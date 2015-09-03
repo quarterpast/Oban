@@ -8,6 +8,7 @@ var Response = MetaStream.use({
 	getInitialMeta() {
 		return {
 			status: 200,
+			timeout: 120,
 			headers: {}
 		}
 	},

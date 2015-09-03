@@ -90,10 +90,10 @@ exports['Response'] = {
 		},
 
 		'should set timeout' (done) {
-			var r = Response([]).timeout(300);
+			var r = Response([]);
 			var s = σ();
 			s.setTimeout = (timeout) => {
-				expect(timeout).to.equal(300);
+				expect(timeout).to.equal(120);
 				done();
 			};
 			r.pipe(s);
@@ -166,6 +166,18 @@ exports['Response'] = {
 			var s = σ();
 			s.writeHead = (status, headers) => {
 				expect(status).to.equal(307);
+				done();
+			};
+			r.pipe(s);
+		}
+	},
+	
+	'timeout': {
+		'should set timeout'(done) {
+			var r = Response([]).timeout(300);
+			var s = σ();
+			s.setTimeout = (timeout) => {
+				expect(timeout).to.equal(300);
 				done();
 			};
 			r.pipe(s);
