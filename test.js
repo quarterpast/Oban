@@ -87,6 +87,16 @@ exports['Response'] = {
 				done();
 			};
 			r.pipe(s);
+		},
+
+		'should set timeout' (done) {
+			var r = Response([]).timeout(300);
+			var s = σ();
+			s.setTimeout = (timeout) => {
+				expect(timeout).to.equal(300);
+				done();
+			};
+			r.pipe(s);
 		}
 	},
 

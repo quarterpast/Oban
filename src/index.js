@@ -14,6 +14,7 @@ var Response = MetaStream.use({
 
 	pipe(res) {
 		if(res.writeHead) res.writeHead(this.meta().status, this.meta().headers);
+		if(res.setTimeout) res.setTimeout(this.meta().timeout);
 		return MetaStream().pipe.call(this, res);
 	},
 
@@ -30,6 +31,11 @@ var Response = MetaStream.use({
 
 	headers(headers) {
 		this.meta({headers});
+		return this;
+	},
+
+	timeout(timeout) {
+		this.meta({timeout});
 		return this;
 	}
 }, {
