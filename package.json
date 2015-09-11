@@ -31,6 +31,7 @@
     "semantic-release": "^4.3.4"
   },
   "dependencies": {
+    "@quarterto/binary": "^1.0.0",
     "@quarterto/meta-stream": "^1.0.0",
     "camel-case": "^1.1.2",
     "is-readable-stream": "^1.0.0",

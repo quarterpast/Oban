@@ -1,14 +1,14 @@
 var {response: responseHeaders} = require('standard-headers');
 var camelCase = require('camel-case');
+var binary = require('@quarterto/binary');
 
 function headerMethod(header) {
-	return function(val) {
+	return {[camelCase(header)]: function(val) {
 		return this.header(header, val);
-	}
+	}};
 }
 
 module.exports = responseHeaders
 .filter(h => h !== 'status')
-.reduce((o, header) =>
-	(o[camelCase(header)] = headerMethod(header), o),
-{});
+.map(headerMethod)
+.reduce(binary(Object.assign), {});

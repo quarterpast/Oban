@@ -1,5 +1,6 @@
 var MetaStream = require('@quarterto/meta-stream');
 var isReadable = require('is-readable-stream');
+var binary = require('@quarterto/binary');
 
 var statusMethods = require('./status');
 var headerMethods = require('./header');
@@ -11,7 +12,7 @@ function metaMethod(key) {
 	}};
 }
 
-var metaMethods = ['headers', 'status', 'timeout'].map(metaMethod).reduce(Object.assign, {});
+var metaMethods = ['headers', 'status', 'timeout'].map(metaMethod).reduce(binary(Object.assign), {});
 
 var Response = MetaStream.use({
 	getInitialMeta() {
