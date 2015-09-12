@@ -12,7 +12,7 @@ function metaMethod(key) {
 	}};
 }
 
-var metaMethods = ['headers', 'status', 'timeout'].map(metaMethod).reduce(binary(Object.assign), {});
+var metaMethods = ['status', 'timeout'].map(metaMethod).reduce(binary(Object.assign), {});
 
 var Response = MetaStream.use({
 	getInitialMeta() {
@@ -31,6 +31,15 @@ var Response = MetaStream.use({
 
 	...headerMethods,
 	...metaMethods,
+
+	headers(h) {
+		var {headers} = this.meta();
+		for(let [k, v] of Object.entries(h)) {
+			headers[k] = headers[k] ? [].concat(headers[k]).concat(v) : v;
+		}
+		this.meta({headers});
+		return this;
+	},
 
 	header(k, v) {
 		return this.headers({[k]: v});

@@ -100,6 +100,14 @@ exports['Response'] = {
 		}
 	},
 
+	'header': {
+		'with mulitple headers should set array'() {
+			var r = Response([]);
+			r.header('a', 1).header('a', 2);
+			expect(r.meta().headers.a).to.deep.equal([1, 2]);
+		}
+	},
+
 	'body': {
 		'should write string body' (done) {
 			Response.body('hello').toArray(body => {
