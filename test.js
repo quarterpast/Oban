@@ -108,6 +108,15 @@ exports['Response'] = {
 		}
 	},
 
+	'cookie': {
+		'is a shorthand for setting a serialized cookie'() {
+			var r = Response([]);
+			r.cookie('foo', 'bar');
+			expect(r.meta().headers).to.have.property('set-cookie', 'foo=bar');
+
+		}
+	},
+
 	'body': {
 		'should write string body' (done) {
 			Response.body('hello').toArray(body => {

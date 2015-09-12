@@ -1,6 +1,7 @@
 var MetaStream = require('@quarterto/meta-stream');
 var isReadable = require('is-readable-stream');
 var binary = require('@quarterto/binary');
+var cookie = require('cookie');
 
 var statusMethods = require('./status');
 var headerMethods = require('./header');
@@ -44,6 +45,10 @@ var Response = MetaStream.use({
 	header(k, v) {
 		return this.headers({[k]: v});
 	},
+
+	cookie(...args) {
+		return this.setCookie(cookie.serialize(...args));
+	}
 }, {
 	body(body) {
 		return this(
