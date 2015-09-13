@@ -105,6 +105,21 @@ exports['Response'] = {
 			var r = Response([]);
 			r.header('a', 1).header('a', 2);
 			expect(r.meta().headers.a).to.deep.equal([1, 2]);
+		},
+
+		'should work asynchronously'(done) {
+			var r = Response(['hello']).flatMap(x => {
+				return Response((push, next) => {
+					setTimeout(push, 200, null, x);
+					setTimeout(next, 201);
+				}).header('x-foo', 'bar');
+			});
+			var s = σ();
+			s.writeHead = (status, headers) => {
+				expect(headers).to.deep.equal({'x-foo': 'bar'});
+				done();
+			};
+			r.pipe(s);
 		}
 	},
 
