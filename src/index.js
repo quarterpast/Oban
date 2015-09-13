@@ -27,9 +27,15 @@ var Response = MetaStream.use({
 	},
 
 	pipe(res) {
-		if(res.writeHead) res.writeHead(this.meta().status, this.meta().headers);
-		if(res.setTimeout) res.setTimeout(this.meta().timeout);
-		return MetaStream().pipe.call(this, res);
+		return MetaStream().pipe.call(this.consume((err, x, push, next) => {
+			if(!res.headersSent) {
+				if(res.writeHead) res.writeHead(this.meta().status, this.meta().headers);
+				if(res.setTimeout) res.setTimeout(this.meta().timeout);
+			}
+
+			push(err, err ? null : x);
+			if(x !== Response.nil) next();
+		}), res);
 	},
 
 	...headerMethods,
