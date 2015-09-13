@@ -2,6 +2,8 @@ var MetaStream = require('@quarterto/meta-stream');
 var isReadable = require('is-readable-stream');
 var binary = require('@quarterto/binary');
 var cookie = require('cookie');
+var fs = require('fs');
+var mime = require('mime');
 
 var statusMethods = require('./status');
 var headerMethods = require('./header');
@@ -64,6 +66,10 @@ var Response = MetaStream.use({
 
 	redirect(location, status = 302) {
 		return this.empty().status(status).headers({location});
+	},
+
+	file(path) {
+		return this(fs.createReadStream(path)).contentType(mime.lookup(path));
 	},
 
 	...statusMethods

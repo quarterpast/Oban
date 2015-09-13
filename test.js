@@ -113,7 +113,26 @@ exports['Response'] = {
 			var r = Response([]);
 			r.cookie('foo', 'bar');
 			expect(r.meta().headers).to.have.property('set-cookie', 'foo=bar');
+		}
+	},
 
+	'file': {
+		'reads and pipes a file'(done) {
+			var r = Response.file('package.json');
+			r.collect().map(Buffer.concat).apply(p => {
+				expect(JSON.parse(p)).to.deep.equal(require('./package.json'));
+				done();
+			});
+		},
+
+		'sets appropriate mime type'(done) {
+			var r = Response.file('package.json');
+			var s = σ();
+			s.writeHead = (status, headers) => {
+				expect(headers).to.have.property('content-type', 'application/json');
+				done();
+			};
+			r.pipe(s);
 		}
 	},
 
