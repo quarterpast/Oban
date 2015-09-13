@@ -50,6 +50,24 @@ var Response = MetaStream.use({
 
 	cookie(...args) {
 		return this.setCookie(cookie.serialize(...args));
+	},
+
+	flatMapErrors(fn) {
+		return this.consume((err, x, push, next) => {
+			if(err) {
+				try {
+					next(Response(fn(err) || []));
+				} catch(e) {
+					push(e);
+					push(null, Response.nil);
+				}
+			} else {
+				push(null, x);
+				if(x !== Response.nil) {
+					next();
+				}
+			}
+		});
 	}
 }, {
 	body(body) {

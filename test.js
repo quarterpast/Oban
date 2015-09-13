@@ -116,6 +116,32 @@ exports['Response'] = {
 		}
 	},
 
+	'flatMapErrors': {
+		'should pass through non-errors'(done) {
+			Response(['hello', 'there'])
+			.flatMapErrors(e => e)
+			.toArray(xs => {
+				expect(xs).to.deep.equal(['hello', 'there']);
+				done();
+			});
+		},
+
+		'should replace errors by result of function'(done) {
+			var err = new Error('foo');
+			Response(['hello', 'there'])
+			.map(() => { throw err })
+			.flatMapErrors(e => {
+				expect(e).to.equal(err);
+				return Response(['bar', 'baz']);
+			})
+			.toArray(xs => {
+				expect(xs).to.deep.equal(['bar', 'baz']);
+				done();
+			});
+
+		}
+	},
+
 	'file': {
 		'reads and pipes a file'(done) {
 			var r = Response.file('package.json');
