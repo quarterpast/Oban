@@ -7,7 +7,7 @@ var camelCase = require('camel-case');
 var Response = require('./');
 
 function statusTest(status) {
-	var funcName = camelCase(STATUS_CODES[status]);
+	var funcName = status === 418 ? 'imATeapot' : camelCase(STATUS_CODES[status]);
 	return {
 		'should set body' (done) {
 			var R = Response.use({}, {
