@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="logo.png" alt="Oban">
+<img src="logo.png" alt="Oban" width="300"><br>
 
 <a href="https://travis-ci.org/quarterto/Oban">
 	<img alt="Build Status" src="https://travis-ci.org/quarterto/Oban.svg?branch=master">
